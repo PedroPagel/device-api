@@ -1,5 +1,7 @@
-﻿using Device.Domain.Interfaces.Repositories;
+﻿using Device.Domain.Interfaces;
+using Device.Domain.Interfaces.Repositories;
 using Device.Domain.Interfaces.Services;
+using Device.Domain.Middlewares;
 using Device.Domain.Services;
 using Device.Infrastructure.DbContexts;
 using Device.Infrastructure.Repositories;
@@ -17,9 +19,11 @@ namespace Device.Infrastructure.Configurations
                 config.UseInMemoryDatabase("device-database");
             });
 
+            services.AddSingleton<ExceptionHandlerMiddleware>();
             services.AddLogging();
             services.AddScoped<IDeviceRepository, DeviceRepository>();
             services.AddScoped<IDeviceService, DeviceService>();
+            services.AddScoped<INotificator, Notificator>();
 
             return services;
         }

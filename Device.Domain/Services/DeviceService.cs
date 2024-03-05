@@ -1,16 +1,17 @@
-﻿using Device.Domain.Interfaces.Repositories;
+﻿using Device.Domain.Interfaces;
+using Device.Domain.Interfaces.Repositories;
 using Device.Domain.Interfaces.Services;
 using Device.Domain.Models;
 using Microsoft.Extensions.Logging;
 
 namespace Device.Domain.Services
 {
-    public class DeviceService : IDeviceService
+    public class DeviceService : BaseService, IDeviceService
     {
         private readonly IDeviceRepository _deviceRepository;
         private readonly ILogger<DeviceService> _logger;
 
-        public DeviceService(IDeviceRepository deviceRepository, ILogger<DeviceService> logger)
+        public DeviceService(INotificator notificator, IDeviceRepository deviceRepository, ILogger<DeviceService> logger) : base(notificator) 
         {
             _deviceRepository = deviceRepository;
             _logger = logger;
@@ -29,6 +30,12 @@ namespace Device.Domain.Services
             _logger.LogInformation("Getting device by id: {id}", id);
             var device = await _deviceRepository.GetDevice(d => d.Id == id);
 
+            if (device == null)
+            {
+                NotifyError($"Device not found with the id: {id}");
+                return null;
+            }
+
             return device;
         }
 
@@ -37,12 +44,26 @@ namespace Device.Domain.Services
             _logger.LogInformation("Getting device by brand: {brand}", brand);
             var device = await _deviceRepository.GetDevice(d => d.Brand.StartsWith(brand));
 
+            if (device == null)
+            {
+                NotifyError($"Device not found with the brand: {brand}");
+                return null;
+            }
+
             return device;
         }
 
         public async Task<bool> DeleteDevice(Guid id)
         {
             _logger.LogInformation("Removing device: {id}", id);
+            var device = await GetDeviceById(id);
+
+            if (device == null)
+            {
+                NotifyError($"Device not found with the id: {id}");
+                return false;
+            }
+
             var removed = await _deviceRepository.Delete(d => d.Id == id);
 
             return removed == 1;
@@ -50,40 +71,45 @@ namespace Device.Domain.Services
 
         public async Task<Entities.Device> PatchDevice(Guid id, DeviceRequest request)
         {
+            _logger.LogInformation("Patch device: {deviceRequest.Name}, {deviceRequest.Brand}", request.Name, request.Brand);
             var device = await GetDeviceById(id);
 
             if (device == null)
             {
+                NotifyError($"Device not found with the id: {id}");
                 return null;
             }
 
-            device.Brand = request.Brand;
-            device.Name = request.Name;
-
-            return await _deviceRepository.Update<Entities.Device>(device);
+            return await UpdateDevice(device, request);
         }
 
-        public async Task<Entities.Device> UpdateDevice(Guid id, DeviceRequest request)
+        public async Task<Entities.Device> PutDevice(Guid id, DeviceRequest request)
         {
+            _logger.LogInformation("Updating device: {deviceRequest.Name}, {deviceRequest.Brand}", request.Name, request.Brand);
             var device = await GetDeviceById(id);
-
             device ??= new();
-            device.Brand = request.Brand;
-            device.Name = request.Name;
 
-            return await _deviceRepository.Update<Entities.Device>(device);
+            return await UpdateDevice(device, request);
         }
 
-        public async Task<Entities.Device> AddDevice(DeviceRequest deviceRequest)
+        public async Task<Entities.Device> AddDevice(DeviceRequest request)
         {
-            _logger.LogInformation("Adding device: {deviceRequest.Name}, {deviceRequest.Brand}", deviceRequest.Name, deviceRequest.Brand);
+            _logger.LogInformation("Adding device: {deviceRequest.Name}, {deviceRequest.Brand}", request.Name, request.Brand);
             var device = await _deviceRepository.Add<Entities.Device>(new Entities.Device()
             {
-                Brand = deviceRequest.Brand,
-                Name = deviceRequest.Name
+                Brand = request.Brand,
+                Name = request.Name
             });
 
             return device;
+        }
+
+        private async Task<Entities.Device> UpdateDevice(Entities.Device device, DeviceRequest request)
+        {
+            device.Brand = request.Brand;
+            device.Name = request.Name;
+
+            return await _deviceRepository.Update<Entities.Device>(device);
         }
     }
 }

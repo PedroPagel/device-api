@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Device.Domain", "Device.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Device.Infrastructure", "Device.Infrastructure\Device.Infrastructure.csproj", "{63DB595A-5EB9-4C0A-BA2F-3AF18A857204}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device.Unit.Tests", "Device.Unit.Tests\Device.Unit.Tests.csproj", "{51A0FC1A-09A0-48BF-9702-995EC08BD318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{63DB595A-5EB9-4C0A-BA2F-3AF18A857204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63DB595A-5EB9-4C0A-BA2F-3AF18A857204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63DB595A-5EB9-4C0A-BA2F-3AF18A857204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51A0FC1A-09A0-48BF-9702-995EC08BD318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51A0FC1A-09A0-48BF-9702-995EC08BD318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51A0FC1A-09A0-48BF-9702-995EC08BD318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51A0FC1A-09A0-48BF-9702-995EC08BD318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
