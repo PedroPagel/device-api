@@ -4,7 +4,7 @@ namespace Device.Infrastructure.DbContexts
 {
     public class DeviceContext : DbContext
     {
-        DbSet<Domain.Entities.Device> Devices { get; set; }
+        public DbSet<Domain.Entities.Device> Devices { get; set; }
 
         public DeviceContext(DbContextOptions<DeviceContext> options) : base(options) { }
 

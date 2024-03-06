@@ -1,0 +1,14 @@
+CREATE DATABASE device_database;
+GO
+
+USE device_database;
+GO
+
+CREATE TABLE DEVICE (
+    Id INT PRIMARY KEY,
+    ds_name VARCHAR(250) NOT NULL,
+    ds_brand VARCHAR(250) NOT NULL,
+    dh_created DATETIME NOT NULL
+);
+
+ALTER TABLE DEVICE ADD CONSTRAINT DEVICE_PK PRIMARY KEY (Id);
