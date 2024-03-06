@@ -78,6 +78,11 @@ This document provides an overview of the HTTP methods available in the Device A
 - **Request Body:** Device model with updated fields.
 - **Returns:** The updated device.
 
+# Testing with In-Memory Database
+For testing purposes, the Device API solution uses an in-memory database. This ensures that tests can be run efficiently without relying on an external database. However, please note that the in-memory database is not persistent and data will be lost when the application is stopped or restarted.
+
+The scripts for creating database and tables. Can be found inside the folder solution.
+
 ## Docker Support
 
 The Device API is containerized using Docker, allowing it to be easily deployed and run on various platforms, including Linux.
@@ -95,5 +100,5 @@ To run the Device API using Docker on a Linux environment, follow these steps:
 4. Build the Docker image by running the following command:
 
    ```bash
-   docker build -t device-api .
+   docker build -t devicewebapi:dev .
 
