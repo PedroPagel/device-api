@@ -83,11 +83,11 @@ For testing purposes, the Device API solution uses an in-memory database. This e
 
 The scripts for creating database and tables. Can be found inside the folder solution.
 
-## Docker Support
+# Docker Support
 
 The Device API is containerized using Docker, allowing it to be easily deployed and run on various platforms, including Linux.
 
-### Running the API with Docker
+## Running the API with Docker
 
 To run the Device API using Docker on a Linux environment, follow these steps:
 
